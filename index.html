@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>สำหรับฮาน่า 🤍</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Playfair+Display:ital,wght@0,600;1,500&family=Dancing+Script:wght@600;700&family=Sarabun:ital,wght@0,400;0,500;0,600;1,500&family=Noto+Serif+Thai:wght@500;600;700&family=Charmonman:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FBF3E7;
+    --paper:#F3E6D3;
+    --rose:#C97B84;
+    --deep:#6E2B33;
+    --sage:#6B7F5E;
+    --gold:#C9A227;
+    --ink:#3B2A2A;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Sarabun', 'Cormorant Garamond', Georgia, serif;
+    font-size:1.15rem;
+    background:var(--cream);
+    color:var(--ink);
+    overflow-x:hidden;
+  }
+  .display{ font-family:'Charmonman', 'Dancing Script', cursive; font-weight:700; }
+  h1, h2, .section-title, .hero-title, .finale-title, .gate-title, .game-q{
+    font-family:'Noto Serif Thai', 'Playfair Display', Georgia, serif;
+  }
+  .hero-title.display, .finale-title.display, .game-q.display{ font-family:'Charmonman', 'Dancing Script', cursive; }
+  section{
+    min-height:100vh;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    padding:40px 24px;
+    text-align:center;
+  }
+
+  /* ---------- GATE ---------- */
+  #gate{
+    background:radial-gradient(ellipse at 50% 20%, #F6EAD2 0%, #E9D6B0 60%, #DCC48E 100%);
+    z-index:10;
+  }
+  .lock-wrap{ position:relative; width:120px; height:120px; margin-bottom:18px; }
+  .lock{
+    width:100%; height:100%;
+    filter: drop-shadow(0 6px 10px rgba(110,43,51,0.25));
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .gate-names{ font-size:1rem; letter-spacing:0.5px; opacity:0.75; margin-bottom:2px;}
+  .gate-title{ font-size:1.6rem; margin:6px 0 18px; color:var(--deep); font-style:italic;}
+  .dots{ display:flex; gap:10px; margin-bottom:22px; }
+  .dot{ width:11px; height:11px; border-radius:50%; border:1.5px solid var(--deep); transition:background .2s; }
+  .dot.filled{ background:var(--deep); }
+  .keypad{ display:grid; grid-template-columns:repeat(3,60px); gap:12px; }
+  .key{
+    width:60px; height:60px; border-radius:14px; border:none;
+    background:rgba(255,255,255,0.55);
+    color:var(--deep); font-size:1.2rem; font-family:inherit;
+    cursor:pointer; transition:transform .12s, background .12s;
+    box-shadow:0 2px 4px rgba(110,43,51,0.15);
+  }
+  .key:active{ transform:scale(0.92); background:rgba(255,255,255,0.85); }
+  .key.wide{ grid-column:span 1; }
+  .hint{ margin-top:16px; font-size:0.8rem; opacity:0.55; }
+  .shake{ animation: shake .4s; }
+  @keyframes shake{ 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+
+  /* ---------- HERO ---------- */
+  #hero{
+    background:linear-gradient(180deg,#FBF3E7,#F3E1DD);
+  }
+  .petals{ position:absolute; inset:0; overflow:hidden; pointer-events:none; }
+  .petal{ position:absolute; top:-40px; font-size:22px; opacity:0.8; animation:fall linear infinite; }
+  @keyframes fall{ to{ transform:translateY(110vh) rotate(360deg); } }
+  .eyebrow{ letter-spacing:3px; text-transform:uppercase; font-size:0.75rem; color:var(--rose); margin-bottom:14px; }
+  .hero-title{ font-size:clamp(2.4rem,7vw,4rem); color:var(--deep); line-height:1.1; }
+  .hero-sub{ margin-top:18px; font-size:1.05rem; max-width:440px; opacity:0.8; }
+  .scroll-cue{ margin-top:50px; font-size:0.8rem; opacity:0.55; letter-spacing:1px; }
+  .scroll-cue::after{ content:"↓"; display:block; margin-top:6px; animation:bob 1.6s infinite; }
+  @keyframes bob{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+
+  /* ---------- GALLERY ---------- */
+  #gallery{ background:var(--paper); }
+  .section-label{ font-size:0.75rem; letter-spacing:3px; text-transform:uppercase; color:var(--rose); margin-bottom:8px; }
+  .section-title{ font-size:clamp(1.8rem,5vw,2.6rem); color:var(--deep); margin-bottom:36px; }
+  .polaroids{
+    display:flex; flex-wrap:wrap; justify-content:center; gap:26px; max-width:900px;
+  }
+  .polaroid{
+    background:#fff; padding:12px 12px 40px; width:190px;
+    box-shadow:0 8px 18px rgba(59,42,42,0.18);
+    transform:rotate(var(--r,0deg));
+    position:relative; font-size:0.85rem; color:var(--ink);
+    transition:transform .25s;
+  }
+  .polaroid:hover{ transform:rotate(0deg) scale(1.05); z-index:2; }
+  .polaroid .frame{
+    width:100%; aspect-ratio:1/1;
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden; border:1px solid #e2d0ab; position:relative;
+  }
+  .polaroid .frame img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .polaroid .frame.missing{
+    background:repeating-linear-gradient(45deg,#EFE0C8,#EFE0C8 10px,#E8D5B5 10px,#E8D5B5 20px);
+  }
+  .polaroid .frame.missing img{ display:none; }
+  .polaroid .frame.missing::after{
+    content:"ใส่รูปตรงนี้"; color:#A98657; font-size:0.72rem; text-align:center; padding:8px;
+  }
+  .polaroid figcaption{ margin-top:10px; text-align:center; font-style:italic; opacity:0.75; }
+
+  /* ---------- NOTE ---------- */
+  #note{ background:linear-gradient(180deg,#F3E1DD,#F6EAD2); }
+  .note-card{
+    background:#FBF5E9; max-width:520px; padding:40px 34px; border-radius:4px;
+    box-shadow:0 10px 30px rgba(59,42,42,0.15);
+    transform:rotate(-1.2deg);
+    position:relative;
+  }
+  .note-card p{ font-size:1.1rem; line-height:1.9; color:var(--ink); }
+  .note-sign{ margin-top:22px; font-style:italic; color:var(--rose); }
+
+  /* ---------- GAME ---------- */
+  #game{ background:var(--cream); }
+  .game-q{ font-size:clamp(1.6rem,5vw,2.3rem); color:var(--deep); margin-bottom:36px; }
+  .game-btns{ position:relative; width:100%; max-width:360px; height:70px; }
+  .yes-btn, .no-btn{
+    padding:16px 34px; border-radius:40px; border:none; font-size:1.05rem;
+    font-family:inherit; cursor:pointer; position:absolute; top:0;
+  }
+  .yes-btn{ background:var(--sage); color:#fff; left:20px; transition:transform .2s; }
+  .yes-btn:hover{ transform:scale(1.08); }
+  .no-btn{ background:#fff; color:var(--deep); border:1.5px solid var(--deep); right:20px; transition:left .18s, top .18s; }
+  .game-result{ margin-top:26px; font-size:1.1rem; color:var(--rose); min-height:1.4em; }
+
+  /* ---------- COUNTER ---------- */
+  #counter{ background:linear-gradient(180deg,#F6EAD2,#EFDFC0); }
+  .counter-num{ font-size:clamp(3rem,12vw,5.5rem); color:var(--deep); font-weight:600; letter-spacing:1px; }
+  .counter-label{ margin-top:6px; letter-spacing:2px; text-transform:uppercase; font-size:0.8rem; opacity:0.65; }
+  .counter-since{ margin-top:18px; font-size:0.95rem; opacity:0.7; font-style:italic; }
+
+  /* ---------- FINALE ---------- */
+  #finale{
+    background:radial-gradient(ellipse at 50% 30%,#7A2E33,#4A1B21 75%);
+    color:#F6E9E3; position:relative; overflow:hidden;
+  }
+  #finale .hearts{ position:absolute; inset:0; pointer-events:none; }
+  #finale .heart{ position:absolute; bottom:-40px; font-size:20px; opacity:0.8; animation:rise linear infinite; }
+  @keyframes rise{ to{ transform:translateY(-115vh) translateX(var(--dx,0)); opacity:0; } }
+  .finale-title{ font-size:clamp(2.6rem,9vw,4.5rem); color:#F6E9E3; }
+  .finale-sub{ margin-top:18px; font-size:1.1rem; max-width:420px; opacity:0.85; }
+  .finale-names{ margin-top:34px; font-size:0.95rem; letter-spacing:1px; opacity:0.7; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- GATE -->
+<section id="gate">
+  <div class="lock-wrap">
+    <svg class="lock" viewBox="0 0 100 100" fill="none">
+      <path d="M50 8 C38 8 30 17 30 28 V38 H70 V28 C70 17 62 8 50 8 Z" stroke="#6E2B33" stroke-width="4" fill="none"/>
+      <rect x="20" y="38" width="60" height="50" rx="10" fill="#C9A227" stroke="#6E2B33" stroke-width="3"/>
+      <circle cx="50" cy="58" r="6" fill="#6E2B33"/>
+      <rect x="47" y="62" width="6" height="14" fill="#6E2B33"/>
+    </svg>
+  </div>
+  <div class="gate-names">จาก เฟรชชี่ · ถึง ฮาน่า</div>
+  <div class="gate-title">ความลับเล็กๆ...</div>
+  <div class="dots" id="dots">
+    <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+  </div>
+  <div class="keypad" id="keypad">
+    <button class="key" data-k="1">1</button>
+    <button class="key" data-k="2">2</button>
+    <button class="key" data-k="3">3</button>
+    <button class="key" data-k="4">4</button>
+    <button class="key" data-k="5">5</button>
+    <button class="key" data-k="6">6</button>
+    <button class="key" data-k="7">7</button>
+    <button class="key" data-k="8">8</button>
+    <button class="key" data-k="9">9</button>
+    <button class="key" data-k="back">⌫</button>
+    <button class="key" data-k="0">0</button>
+    <button class="key" data-k="ok">↵</button>
+  </div>
+  <div class="hint">แอบกระซิบ — ลองใส่วันและเดือนที่เริ่มคบกันดูสิ (วันเดือน)</div>
+</section>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="petals" id="petals"></div>
+  <div class="eyebrow">สิ่งเล็กๆ น้อยๆ สำหรับเธอ</div>
+  <h1 class="hero-title display">สวัสดีนะ สาวสวยของฉัน ฮาน่า</h1>
+  <p class="hero-sub">ฉันทำเว็บนี้ให้เธอ แทนที่จะพิมพ์บอกเฉยๆ — บางเรื่องมันคู่ควรกับการเลื่อนดูสักหน่อย พร้อมหรือยัง?</p>
+  <div class="scroll-cue">เลื่อนต่อไปนะ</div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <h2 class="section-title display">เจ้าหญิงแสนสวยของฉัน</h2>
+  <div class="polaroids">
+    <figure class="polaroid" style="--r:-4deg"><div class="frame"><img src="photos/1.jpg" alt="" onerror="this.parentElement.classList.add('missing')"></div><figcaption>รักของฉัน</figcaption></figure>
+    <figure class="polaroid" style="--r:3deg"><div class="frame"><img src="photos/2.jpg" alt="" onerror="this.parentElement.classList.add('missing')"></div><figcaption>เจ้าหญิงของฉัน</figcaption></figure>
+    <figure class="polaroid" style="--r:-2deg"><div class="frame"><img src="photos/3.jpg" alt="" onerror="this.parentElement.classList.add('missing')"></div><figcaption>หัวใจของฉัน</figcaption></figure>
+    <figure class="polaroid" style="--r:5deg"><div class="frame"><img src="photos/4.jpg" alt="" onerror="this.parentElement.classList.add('missing')"></div><figcaption>จิตวิญญาณของฉัน</figcaption></figure>
+  </div>
+</section>
+
+<!-- NOTE -->
+<section id="note">
+  <div class="section-label">ข้อความเล็กๆ</div>
+  <div class="note-card">
+    <p>ฉันรู้ว่าฉันไม่ได้พูดถูกทุกครั้ง แต่เธอทำให้วันที่ยากลำบากกลายเป็นวันที่คุ้มค่า ขอบคุณที่เป็นตัวเธอเองแบบนี้เสมอมา — ฉันไม่เคยมองข้ามสิ่งนั้นแม้แต่นิดเดียว</p>
+    <div class="note-sign">— ด้วยรักเสมอ, Rushabh</div>
+  </div>
+</section>
+
+<!-- GAME -->
+<section id="game">
+  <div class="section-label">หนึ่งคำถาม</div>
+  <h2 class="game-q display">เธอรักฉันไหม? 🥺</h2>
+  <div class="game-btns" id="gameBtns">
+    <button class="yes-btn" id="yesBtn">รัก 🤍</button>
+    <button class="no-btn" id="noBtn">ไม่รัก</button>
+  </div>
+  <div class="game-result" id="gameResult"></div>
+</section>
+
+<!-- COUNTER -->
+<section id="counter">
+  <div class="section-label">ตั้งแต่วันที่ 9 มิถุนายน 2026</div>
+  <div class="counter-num" id="dayCount">0</div>
+  <div class="counter-label">วัน และนับต่อไปเรื่อยๆ</div>
+  <div class="counter-since">ทุกวันที่ผ่านมา ฉันอยู่กับเธอ</div>
+</section>
+
+<!-- FINALE -->
+<section id="finale">
+  <div class="hearts" id="finaleHearts"></div>
+  <h2 class="finale-title display">ฉันรักเธอนะ ฮาน่า</h2>
+  <div class="finale-names">Rushabh 🤍 Hana</div>
+</section>
+
+<script>
+  // ---- GATE LOGIC ----
+  const target = "0906"; // 9 June, DDMM — edit if you'd like a different code
+  let entered = "";
+  const dots = document.querySelectorAll("#dots .dot");
+  const dotsWrap = document.getElementById("dots");
+  const gate = document.getElementById("gate");
+
+  function refreshDots(){
+    dots.forEach((d,i)=> d.classList.toggle("filled", i < entered.length));
+  }
+  document.getElementById("keypad").addEventListener("click",(e)=>{
+    const btn = e.target.closest(".key");
+    if(!btn) return;
+    const k = btn.dataset.k;
+    if(k === "back"){ entered = entered.slice(0,-1); refreshDots(); return; }
+    if(k === "ok"){
+      if(entered === target){ unlock(); } else { wrong(); }
+      return;
+    }
+    if(entered.length < 4){ entered += k; refreshDots(); }
+    if(entered.length === 4){
+      setTimeout(()=>{ entered === target ? unlock() : wrong(); }, 150);
+    }
+  });
+  function wrong(){
+    dotsWrap.classList.add("shake");
+    setTimeout(()=>{ dotsWrap.classList.remove("shake"); entered=""; refreshDots(); }, 400);
+  }
+  function unlock(){
+    gate.style.transition = "opacity .6s, transform .6s";
+    gate.style.opacity = "0";
+    gate.style.transform = "translateY(-30px)";
+    setTimeout(()=>{ gate.style.display="none"; document.body.style.overflow="auto"; }, 600);
+  }
+  // lock scroll until unlocked
+  document.body.style.overflow = "hidden";
+
+  // ---- PETALS ----
+  const petalWrap = document.getElementById("petals");
+  const petalChars = ["🌸","🌷","🌼","💮"];
+  for(let i=0;i<18;i++){
+    const p = document.createElement("div");
+    p.className = "petal";
+    p.textContent = petalChars[Math.floor(Math.random()*petalChars.length)];
+    p.style.left = Math.random()*100+"%";
+    p.style.animationDuration = (6+Math.random()*6)+"s";
+    p.style.animationDelay = (Math.random()*6)+"s";
+    petalWrap.appendChild(p);
+  }
+
+  // ---- FINALE HEARTS ----
+  const heartsWrap = document.getElementById("finaleHearts");
+  for(let i=0;i<22;i++){
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.textContent = "🤍";
+    h.style.left = Math.random()*100+"%";
+    h.style.setProperty("--dx",(Math.random()*80-40)+"px");
+    h.style.animationDuration = (5+Math.random()*5)+"s";
+    h.style.animationDelay = (Math.random()*6)+"s";
+    heartsWrap.appendChild(h);
+  }
+
+  // ---- DO YOU LOVE ME GAME ----
+  const noBtn = document.getElementById("noBtn");
+  const yesBtn = document.getElementById("yesBtn");
+  const result = document.getElementById("gameResult");
+  const wrap = document.getElementById("gameBtns");
+  noBtn.addEventListener("mouseenter", dodge);
+  noBtn.addEventListener("click", dodge);
+  noBtn.addEventListener("touchstart", (e)=>{ e.preventDefault(); dodge(); });
+  function dodge(){
+    const wrapRect = wrap.getBoundingClientRect();
+    const maxX = wrapRect.width - 90;
+    const maxY = 10;
+    const x = Math.random()*maxX;
+    const y = (Math.random()*2-1)*maxY;
+    noBtn.style.left = x+"px";
+    noBtn.style.right = "auto";
+    noBtn.style.top = (y+10)+"px";
+  }
+  yesBtn.addEventListener("click", ()=>{
+    result.textContent = "รู้อยู่แล้วเชียว 🤍";
+  });
+
+  // ---- DAY COUNTER ----
+  const start = new Date("2026-06-09T00:00:00");
+  const countEl = document.getElementById("dayCount");
+  function updateCount(){
+    const now = new Date();
+    const diff = Math.max(0, Math.floor((now - start)/(1000*60*60*24)));
+    countEl.textContent = diff;
+  }
+  updateCount();
+  setInterval(updateCount, 60000);
+</script>
+</body>
+</html>
