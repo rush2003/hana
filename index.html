@@ -160,8 +160,100 @@
   .finale-sub{ margin-top:18px; font-size:1.1rem; max-width:420px; opacity:0.85; }
   .finale-names{ margin-top:34px; font-size:0.95rem; letter-spacing:1px; opacity:0.7; }
 
+  /* ---------- SCROLL REVEAL ---------- */
+  .reveal{ opacity:0; transform:translateY(34px); transition:opacity .9s ease, transform .9s ease; }
+  .reveal.show{ opacity:1; transform:translateY(0); }
+  .reveal.stagger.show .flip-card, .reveal.stagger.show .track{ opacity:1; transform:translateY(0); }
+  .reveal.stagger .flip-card, .reveal.stagger .track{
+    opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s ease;
+  }
+  .reveal.stagger .polaroid{ opacity:0; transform:translateY(24px) rotate(var(--r,0deg)); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.stagger.show .polaroid{ opacity:1; transform:translateY(0) rotate(var(--r,0deg)); }
+  .reveal.stagger.show .flip-card:nth-child(1),.reveal.stagger.show .track:nth-child(1),.reveal.stagger.show .polaroid:nth-child(1){ transition-delay:.05s; }
+  .reveal.stagger.show .flip-card:nth-child(2),.reveal.stagger.show .track:nth-child(2),.reveal.stagger.show .polaroid:nth-child(2){ transition-delay:.15s; }
+  .reveal.stagger.show .flip-card:nth-child(3),.reveal.stagger.show .track:nth-child(3),.reveal.stagger.show .polaroid:nth-child(3){ transition-delay:.25s; }
+  .reveal.stagger.show .flip-card:nth-child(4),.reveal.stagger.show .track:nth-child(4),.reveal.stagger.show .polaroid:nth-child(4){ transition-delay:.35s; }
+  .reveal.stagger.show .flip-card:nth-child(5){ transition-delay:.45s; }
+  .reveal.stagger.show .flip-card:nth-child(6){ transition-delay:.55s; }
+
+  /* ---------- FLORAL DIVIDER (petals part to reveal caption) ---------- */
+  .floral-divider{
+    position:relative; height:150px; width:100%;
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden; background:var(--paper);
+  }
+  .fd-caption{
+    font-family:'Noto Serif Thai','Playfair Display',serif;
+    font-size:1.3rem; color:var(--deep); opacity:0;
+    transition:opacity 1s ease .45s; z-index:1; padding:0 20px;
+  }
+  .fd-petals{
+    position:absolute; top:0; bottom:0; width:52%;
+    display:flex; align-items:center; font-size:1.8rem; letter-spacing:8px;
+    background:var(--paper); z-index:2;
+    transition:transform 1.15s cubic-bezier(.65,.05,.2,1);
+  }
+  .fd-left{ left:0; justify-content:flex-end; padding-right:10px; }
+  .fd-right{ right:0; justify-content:flex-start; padding-left:10px; }
+  .floral-divider.open .fd-left{ transform:translateX(-100%); }
+  .floral-divider.open .fd-right{ transform:translateX(100%); }
+  .floral-divider.open .fd-caption{ opacity:1; }
+
+  /* ---------- REASONS (flip cards) ---------- */
+  #reasons{ background:var(--paper); }
+  .reasons-grid{ display:flex; flex-wrap:wrap; gap:20px; justify-content:center; max-width:820px; }
+  .flip-card{ width:160px; height:200px; perspective:1200px; cursor:pointer; }
+  .flip-inner{
+    position:relative; width:100%; height:100%;
+    transition:transform .6s; transform-style:preserve-3d;
+    box-shadow:0 8px 18px rgba(59,42,42,0.18); border-radius:14px;
+  }
+  .flip-card.flipped .flip-inner{ transform:rotateY(180deg); }
+  .flip-front, .flip-back{
+    position:absolute; inset:0; backface-visibility:hidden;
+    border-radius:14px; display:flex; flex-direction:column; align-items:center;
+    justify-content:center; padding:16px; text-align:center; gap:8px;
+  }
+  .flip-front{ background:linear-gradient(160deg,#F3E1DD,#F6EAD2); color:var(--deep); }
+  .flip-front .fc-icon{ font-size:1.8rem; }
+  .flip-front div:last-child{ font-size:0.9rem; opacity:.75; }
+  .flip-back{ background:var(--deep); color:#F6E9E3; transform:rotateY(180deg); font-size:0.92rem; line-height:1.6; }
+
+  /* ---------- PLAYLIST ---------- */
+  #playlist{ background:var(--cream); }
+  .playlist-list{ display:flex; flex-direction:column; gap:14px; width:100%; max-width:460px; }
+  .track{
+    display:flex; align-items:center; gap:12px; background:#fff;
+    border-radius:14px; padding:12px 16px; box-shadow:0 4px 14px rgba(59,42,42,.12);
+    text-align:left; transition:transform .2s;
+  }
+  .track:hover{ transform:translateY(-3px); }
+  .track-art{ width:52px; height:52px; border-radius:10px; overflow:hidden; position:relative; flex-shrink:0; }
+  .track-art img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .track-art.missing{
+    background:repeating-linear-gradient(45deg,#EFE0C8,#EFE0C8 8px,#E8D5B5 8px,#E8D5B5 16px);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .track-art.missing img{ display:none; }
+  .track-art.missing::after{ content:"🎵"; font-size:1.2rem; color:#A98657; }
+  .play-btn{
+    width:38px; height:38px; border-radius:50%; border:none; flex-shrink:0;
+    background:var(--deep); color:#fff; font-size:0.9rem; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; transition:transform .15s, background .15s;
+  }
+  .play-btn:hover{ transform:scale(1.08); }
+  .play-btn.playing{ background:var(--sage); }
+  .play-btn:disabled{ opacity:0.4; cursor:not-allowed; }
+  .track-info{ flex:1; min-width:0; }
+  .track-title{ font-weight:600; color:var(--deep); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .track-artist{ font-size:0.85rem; opacity:.65; }
+  .track-progress{ margin-top:6px; height:4px; width:100%; background:#eee2cc; border-radius:2px; overflow:hidden; }
+  .track-progress-fill{ height:100%; width:0%; background:var(--rose); transition:width .1s linear; }
+  .playlist-note{ margin-top:22px; font-size:0.8rem; opacity:.55; max-width:420px; }
+
   @media (prefers-reduced-motion: reduce){
     *{ animation:none !important; transition:none !important; }
+    .reveal, .reveal.stagger .flip-card, .reveal.stagger .track{ opacity:1 !important; transform:none !important; }
   }
 </style>
 </head>
@@ -204,14 +296,14 @@
   <div class="petals" id="petals"></div>
   <div class="eyebrow">สิ่งเล็กๆ น้อยๆ สำหรับเธอ</div>
   <h1 class="hero-title display">สวัสดีนะ สาวสวยของฉัน ฮาน่า</h1>
-  <p class="hero-sub">ฉันทำเว็บนี้ให้เธอ แทนที่จะพิมพ์บอกเฉยๆ — บางเรื่องมันคู่ควรกับการเลื่อนดูสักหน่อย พร้อมหรือยัง?</p>
+  <p class="hero-sub reveal">ฉันทำเว็บนี้ให้เธอ แทนที่จะพิมพ์บอกเฉยๆ — บางเรื่องมันคู่ควรกับการเลื่อนดูสักหน่อย พร้อมหรือยัง?</p>
   <div class="scroll-cue">เลื่อนต่อไปนะ</div>
 </section>
 
 <!-- GALLERY -->
 <section id="gallery">
-  <h2 class="section-title display">เจ้าหญิงแสนสวยของฉัน</h2>
-  <div class="polaroids">
+  <h2 class="section-title display reveal">เจ้าหญิงแสนสวยของฉัน</h2>
+  <div class="polaroids reveal stagger">
     <figure class="polaroid" style="--r:-4deg"><div class="frame"><img src="photos/1.jpg" alt="" onerror="this.parentElement.classList.add('missing')"></div><figcaption>รักของฉัน</figcaption></figure>
     <figure class="polaroid" style="--r:3deg"><div class="frame"><img src="photos/2.jpg" alt="" onerror="this.parentElement.classList.add('missing')"></div><figcaption>เจ้าหญิงของฉัน</figcaption></figure>
     <figure class="polaroid" style="--r:-2deg"><div class="frame"><img src="photos/3.jpg" alt="" onerror="this.parentElement.classList.add('missing')"></div><figcaption>หัวใจของฉัน</figcaption></figure>
@@ -222,16 +314,111 @@
 <!-- NOTE -->
 <section id="note">
   <div class="section-label">ข้อความเล็กๆ</div>
-  <div class="note-card">
+  <div class="note-card reveal">
     <p>ฉันรู้ว่าฉันไม่ได้พูดถูกทุกครั้ง แต่เธอทำให้วันที่ยากลำบากกลายเป็นวันที่คุ้มค่า ขอบคุณที่เป็นตัวเธอเองแบบนี้เสมอมา — ฉันไม่เคยมองข้ามสิ่งนั้นแม้แต่นิดเดียว</p>
     <div class="note-sign">— ด้วยรักเสมอ, Rushabh</div>
   </div>
 </section>
 
+<!-- FLORAL DIVIDER 1 -->
+<div class="floral-divider" id="fd1">
+  <div class="fd-petals fd-left">🌸 🌺 🌷</div>
+  <div class="fd-petals fd-right">🌷 🌺 🌸</div>
+  <div class="fd-caption">เหตุผลที่ฉันรักเธอ...</div>
+</div>
+
+<!-- REASONS -->
+<section id="reasons">
+  <div class="section-label">แค่บางส่วนเท่านั้นนะ</div>
+  <h2 class="section-title display reveal">เหตุผลที่ฉันรักเธอ</h2>
+  <div class="reasons-grid reveal stagger">
+    <div class="flip-card"><div class="flip-inner">
+      <div class="flip-front"><div class="fc-icon">🤍</div><div>แตะเพื่อดู</div></div>
+      <div class="flip-back">รอยยิ้มของเธอ ทำให้ทุกวันของฉันสดใสขึ้น</div>
+    </div></div>
+    <div class="flip-card"><div class="flip-inner">
+      <div class="flip-front"><div class="fc-icon">🤍</div><div>แตะเพื่อดู</div></div>
+      <div class="flip-back">เธอฟังฉันเสมอ แม้ในวันที่ฉันพูดไม่ค่อยรู้เรื่อง</div>
+    </div></div>
+    <div class="flip-card"><div class="flip-inner">
+      <div class="flip-front"><div class="fc-icon">🤍</div><div>แตะเพื่อดู</div></div>
+      <div class="flip-back">ความใจดีที่เธอมีให้ทุกคนรอบตัว ไม่ใช่แค่ฉัน</div>
+    </div></div>
+    <div class="flip-card"><div class="flip-inner">
+      <div class="flip-front"><div class="fc-icon">🤍</div><div>แตะเพื่อดู</div></div>
+      <div class="flip-back">เธอทำให้ฉันอยากเป็นคนที่ดีขึ้นทุกวัน</div>
+    </div></div>
+    <div class="flip-card"><div class="flip-inner">
+      <div class="flip-front"><div class="fc-icon">🤍</div><div>แตะเพื่อดู</div></div>
+      <div class="flip-back">วิธีที่เธอหัวเราะกับเรื่องไร้สาระของฉัน</div>
+    </div></div>
+    <div class="flip-card"><div class="flip-inner">
+      <div class="flip-front"><div class="fc-icon">🤍</div><div>แตะเพื่อดู</div></div>
+      <div class="flip-back">แค่มีเธออยู่ตรงนี้ ก็ทำให้ทุกที่รู้สึกเหมือนบ้าน</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- FLORAL DIVIDER 2 -->
+<div class="floral-divider" id="fd2">
+  <div class="fd-petals fd-left">🌼 🌹 🌷</div>
+  <div class="fd-petals fd-right">🌷 🌹 🌼</div>
+  <div class="fd-caption">เพลงที่ทำให้ฉันนึกถึงเธอ...</div>
+</div>
+
+<!-- PLAYLIST -->
+<section id="playlist">
+  <div class="section-label">เพลย์ลิสต์ของเรา</div>
+  <h2 class="section-title display reveal">เพลงที่ฉันนึกถึงเธอ</h2>
+  <div class="playlist-list reveal stagger">
+    <div class="track">
+      <div class="track-art"><img src="songs/1.jpg" alt="" onerror="this.parentElement.classList.add('missing')"></div>
+      <button class="play-btn" aria-label="play">▶</button>
+      <div class="track-info">
+        <div class="track-title">ชื่อเพลงที่ 1</div>
+        <div class="track-artist">ศิลปิน</div>
+        <div class="track-progress"><div class="track-progress-fill"></div></div>
+      </div>
+      <audio src="songs/1.mp3" preload="none"></audio>
+    </div>
+    <div class="track">
+      <div class="track-art"><img src="songs/2.jpg" alt="" onerror="this.parentElement.classList.add('missing')"></div>
+      <button class="play-btn" aria-label="play">▶</button>
+      <div class="track-info">
+        <div class="track-title">ชื่อเพลงที่ 2</div>
+        <div class="track-artist">ศิลปิน</div>
+        <div class="track-progress"><div class="track-progress-fill"></div></div>
+      </div>
+      <audio src="songs/2.mp3" preload="none"></audio>
+    </div>
+    <div class="track">
+      <div class="track-art"><img src="songs/3.jpg" alt="" onerror="this.parentElement.classList.add('missing')"></div>
+      <button class="play-btn" aria-label="play">▶</button>
+      <div class="track-info">
+        <div class="track-title">ชื่อเพลงที่ 3</div>
+        <div class="track-artist">ศิลปิน</div>
+        <div class="track-progress"><div class="track-progress-fill"></div></div>
+      </div>
+      <audio src="songs/3.mp3" preload="none"></audio>
+    </div>
+    <div class="track">
+      <div class="track-art"><img src="songs/4.jpg" alt="" onerror="this.parentElement.classList.add('missing')"></div>
+      <button class="play-btn" aria-label="play">▶</button>
+      <div class="track-info">
+        <div class="track-title">ชื่อเพลงที่ 4</div>
+        <div class="track-artist">ศิลปิน</div>
+        <div class="track-progress"><div class="track-progress-fill"></div></div>
+      </div>
+      <audio src="songs/4.mp3" preload="none"></audio>
+    </div>
+  </div>
+  <p class="playlist-note">*ใส่ไฟล์เพลง (.mp3) ในโฟลเดอร์ "songs/" ชื่อ 1.mp3–4.mp3 และปกเพลง (ถ้ามี) ชื่อ 1.jpg–4.jpg แล้วแก้ชื่อเพลง/ศิลปินในไฟล์ index.html</p>
+</section>
+
 <!-- GAME -->
 <section id="game">
   <div class="section-label">หนึ่งคำถาม</div>
-  <h2 class="game-q display">เธอรักฉันไหม? 🥺</h2>
+  <h2 class="game-q display reveal">เธอรักฉันไหม? 🥺</h2>
   <div class="game-btns" id="gameBtns">
     <button class="yes-btn" id="yesBtn">รัก 🤍</button>
     <button class="no-btn" id="noBtn">ไม่รัก</button>
@@ -242,7 +429,7 @@
 <!-- COUNTER -->
 <section id="counter">
   <div class="section-label">ตั้งแต่วันที่ 9 มิถุนายน 2026</div>
-  <div class="counter-num" id="dayCount">0</div>
+  <div class="counter-num reveal" id="dayCount">0</div>
   <div class="counter-label">วัน และนับต่อไปเรื่อยๆ</div>
   <div class="counter-since">ทุกวันที่ผ่านมา ฉันอยู่กับเธอ</div>
 </section>
@@ -250,7 +437,7 @@
 <!-- FINALE -->
 <section id="finale">
   <div class="hearts" id="finaleHearts"></div>
-  <h2 class="finale-title display">ฉันรักเธอนะ ฮาน่า</h2>
+  <h2 class="finale-title display reveal">ฉันรักเธอนะ ฮาน่า</h2>
   <div class="finale-names">Rushabh 🤍 Hana</div>
 </section>
 
@@ -350,6 +537,61 @@
   }
   updateCount();
   setInterval(updateCount, 60000);
+
+  // ---- FLIP CARDS ----
+  document.querySelectorAll(".flip-card").forEach((card)=>{
+    card.addEventListener("click", ()=> card.classList.toggle("flipped"));
+  });
+
+  // ---- PLAYABLE TRACKS ----
+  document.querySelectorAll(".track").forEach((track)=>{
+    const audio = track.querySelector("audio");
+    const btn = track.querySelector(".play-btn");
+    const fill = track.querySelector(".track-progress-fill");
+    btn.addEventListener("click", ()=>{
+      if(audio.paused){
+        document.querySelectorAll("audio").forEach((a)=>{ if(a !== audio) a.pause(); });
+        document.querySelectorAll(".play-btn").forEach((b)=>{
+          if(b !== btn){ b.textContent = "▶"; b.classList.remove("playing"); }
+        });
+        audio.play().catch(()=>{});
+      } else {
+        audio.pause();
+      }
+    });
+    audio.addEventListener("play", ()=>{ btn.textContent = "⏸"; btn.classList.add("playing"); });
+    audio.addEventListener("pause", ()=>{ btn.textContent = "▶"; btn.classList.remove("playing"); });
+    audio.addEventListener("timeupdate", ()=>{
+      if(audio.duration) fill.style.width = (audio.currentTime/audio.duration*100)+"%";
+    });
+    audio.addEventListener("ended", ()=>{ fill.style.width = "0%"; });
+    audio.addEventListener("error", ()=>{
+      btn.disabled = true;
+      btn.title = "ยังไม่มีไฟล์เพลงนี้";
+    });
+  });
+
+  // ---- SCROLL REVEAL ----
+  const revealObserver = new IntersectionObserver((entries)=>{
+    entries.forEach((entry)=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add("show");
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll(".reveal").forEach((el)=> revealObserver.observe(el));
+
+  // ---- FLORAL DIVIDER PARTING ----
+  const dividerObserver = new IntersectionObserver((entries)=>{
+    entries.forEach((entry)=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add("open");
+        dividerObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll(".floral-divider").forEach((el)=> dividerObserver.observe(el));
 </script>
 </body>
 </html>
